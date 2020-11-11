@@ -8,6 +8,7 @@ class Data(BaseModel):
     age: int
     other: Optional[str] = None
 
+    # don't name it `validate`!!! otherwise it returns dict
     @root_validator
     def validate_name_and_age(cls, values):
         if values["age"] < 18 and values["name"] == "Bill":
@@ -18,5 +19,8 @@ class Data(BaseModel):
 d = Data(name="n1", age=123)
 print(d)
 
-d = Data(name="Bill", age=17)
-print(d)
+try:
+    d = Data(name="Bill", age=17)
+    print(d)
+except ValueError as e:
+    print(f"error: {str(e)}")
