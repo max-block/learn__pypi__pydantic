@@ -1,22 +1,16 @@
-from typing import Optional
-
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, Field
 
 
 class Data(BaseModel):
-    name: str
-    age: int
-    other: Optional[str] = None
+    from_: str = Field(..., alias="from")
 
-    @root_validator
-    def validate_name_and_age(cls, values):
-        if values["age"] < 18 and values["name"] == "Bill":
-            raise ValueError("illegal combination of age and name")
-        return values
+    # class Config:
+    #     fields = {"from_": "from"}
 
 
-d = Data(name="n1", age=123)
-print(d)
+d = Data(**{"from": 123})
+print(d.dict())
+# {"from_": "123"}
 
-d = Data(name="Bill", age=17)
-print(d)
+print(d.dict(by_alias=True))
+# {'from': '123'}
