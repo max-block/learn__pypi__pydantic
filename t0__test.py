@@ -1,16 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictStr
 
 
 class Data(BaseModel):
-    from_: str = Field(..., alias="from")
-
-    # class Config:
-    #     fields = {"from_": "from"}
+    from_address: StrictStr
 
 
-d = Data(**{"from": 123})
+d = Data(**{"from_address": 0x123})
 print(d.dict())
 # {"from_": "123"}
-
-print(d.dict(by_alias=True))
-# {'from': '123'}
